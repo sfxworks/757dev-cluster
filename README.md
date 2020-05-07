@@ -21,8 +21,8 @@ The 757 dev cluster aims to provide a place for users new or knowledgable with k
 While most of the above can be adjusted, some standards that should be noted are the lack of permission for creating hostPath volumes or containers with root privileges. Details TBA. 
 
 
-[Joining a Node][https://github.com/sfxworks/757dev-cluster/blob/master/docs/joining-a-node.md]
-[User Interract][https://github.com/sfxworks/757dev-cluster/blob/master/docs/user-interraction.md]
+[Joining a Node](https://github.com/sfxworks/757dev-cluster/blob/master/docs/joining-a-node.md)
+[User Interract](https://github.com/sfxworks/757dev-cluster/blob/master/docs/user-interraction.md)
 
 
 ## TODO
