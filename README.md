@@ -1,54 +1,29 @@
 # 757dev-cluster
 
-## Joining the network as a Node Admin
+## Overview
 
-### Join the Network
+The 757 dev cluster aims to provide a place for users new or knowledgable with kubernetes to interact with a local cluster that can present common services and serve as a place to deploy and serve content from containerized applications. Users familiar with kubernetes may even go as far as to volunteer machines as “nodes” for other kubernetes users to deploy applications against. Essentially, it’s a “private” multi tenant cluster. Expect nodes to go down at any time, but also expect a form of HA via essential services such as ingress, authentication and remote container builders. Everyone from users to administrators can aim to gain practice from this cluster and it’s workloads. Expect a variety of different nodes from capabilities to container runtimes.
 
-```bash
-curl -s 'https://raw.githubusercontent.com/zerotier/ZeroTierOne/master/doc/contact%40zerotier.com.gpg' | gpg --import && \
-if z=$(curl -s 'https://install.zerotier.com/' | gpg); then echo "$z" | sudo bash; fi
 
-zerotier-cli join b6079f73c6adf9d1
 
-ip a
-```
-[![asciicast](https://asciinema.org/a/3MflQKfmvkqoV2f6IsFZgiemZ.svg)](https://asciinema.org/a/3MflQKfmvkqoV2f6IsFZgiemZ)
+| Feature            | Status | Quota | Notes                                                                                                                                    |
+| :----------------- | :----- | :---- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| Deployments        | G2G    | 10    | Ask for more                                                                                                                             |
+| Pods               | G2G    | 20    | Ask for more                                                                                                                             |
+| Namespace          | G2G    | 1     | Can’t have NS admin (usually not needed for new users)                                                                                   |
+| Statefulset        | TBA    | NA    | Correlates with PVC                                                                                                                      |
+| Persistent Volumes | TBA    | NA    | Would need volunteers to dedicate storage and a gameplan to keep  latency low                                                            |
+| Ingress            | TBA    | 10    | Plans are to work with cloudflare argo or have a GCP central load balancer hooked with a NodePort + an internal nginx ingress controller |
+| Load Balancer      | No     | NA    | Only 1 IP is referenced for ingress. If you need layer 4 routing, ask.                                                                   |
+| Container Builder  | TBA    | NA    | Using a rootless buildkit daemon on the cluster.                                                                                         |
 
-### Submit your node for approval
-https://forms.gle/2Hz3V7ZvnhSH9srD8
+## Quotas and Limitations
+While most of the above can be adjusted, some standards that should be noted are the lack of permission for creating hostPath volumes or containers with root privileges. Details TBA. 
 
-No hard requirements, just need to know who you are and if you're in our community. 
 
-### Join the Cluster
-[![asciicast](https://asciinema.org/a/G5TrOw0luZpakxQVeqDkp6X0v.svg)](https://asciinema.org/a/G5TrOw0luZpakxQVeqDkp6X0v)
 
-Tested on Ubuntu 20
-Set `$TOKEN` and `$NODE_IP` beforehand
-```bash
-modprobe br_netfilter
-echo '1' > /proc/sys/net/ipv4/ip_forward
-cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
-net.bridge.bridge-nf-call-ip6tables = 1
-net.bridge.bridge-nf-call-iptables = 1
-EOF
-
-apt-get install -y containerd
-
-sudo apt-get update && sudo apt-get install -y apt-transport-https curl
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-cat <<EOF | tee /etc/apt/sources.list.d/kubernetes.list
-deb https://apt.kubernetes.io/ kubernetes-xenial main
-EOF
-apt-get update
-apt-get install -y kubelet kubeadm
-apt-mark hold kubelet kubeadm
-apt-get install ipset -y
-echo "KUBELET_EXTRA_ARGS=--node-ip=$NODE_IP" > /etc/default/kubelet
-echo "172.26.9.47 lab.k8s757.dev" >> /etc/hosts
-
-#If on Rasp PI 4, enable cgroups for mem
-#sed -i '$ s/$/ cgroup_enable=cpuset cgroup_enable=memory cgroup_memory=1/' /boot/firmware/cmdline.txt
-#And restart
-
-kubeadm join lab.k8s757.dev:6443 --token $TOKEN --discovery-token-ca-cert-hash sha256:01ef7baef9d250dcf764d449ac282e91666c8483bfc74994c84cc39b66301a62
-```
+## TODO
+- Automatically create a namespace when a user registers at keycloak
+- Integrate cloudflare argo for ingress
+- Figure out or allocate resources for stateful workloads
+- Implement buildkit daemon for remote image builds with tutorials
