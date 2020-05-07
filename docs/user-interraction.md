@@ -19,7 +19,7 @@ roleRef:
   name: lab-admin
   apiGroup: rbac.authorization.k8s.io
 ```
-3. Setup your configu file for oauth
+4. Setup your configuration file for oauth
 
 #### User Configuration
 ```yaml

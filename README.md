@@ -24,7 +24,7 @@ While most of the above can be adjusted, some standards that should be noted are
 ## Documentation 
 - [Joining a Node](https://github.com/sfxworks/757dev-cluster/blob/master/docs/joining-a-node.md)
 
-- [User Interract](https://github.com/sfxworks/757dev-cluster/blob/master/docs/user-interraction.md)
+- [User Interraction](https://github.com/sfxworks/757dev-cluster/blob/master/docs/user-interraction.md)
 
 
 ## TODO
