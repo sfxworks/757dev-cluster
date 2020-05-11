@@ -50,3 +50,9 @@ echo "172.26.9.47 lab.k8s757.dev" >> /etc/hosts
 
 kubeadm join lab.k8s757.dev:6443 --token $TOKEN --discovery-token-ca-cert-hash sha256:01ef7baef9d250dcf764d449ac282e91666c8483bfc74994c84cc39b66301a62
 ```
+
+
+### Notes
+
+DNS via ZeroTier currently isn't working. Set DNS policy to none for kubelet with a public DNS server such as 1.1.1.1. Internal addresses will be published with their internal ip addresses the coming figure.
+https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/
